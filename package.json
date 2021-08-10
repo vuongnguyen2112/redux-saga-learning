@@ -40,5 +40,16 @@
   "devDependencies": {
     "husky": "^7.0.1",
     "lint-staged": "^11.1.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,css}": [
+      "npm run format",
+      "git add"
+    ]
   }
 }
