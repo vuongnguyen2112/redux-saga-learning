@@ -15,28 +15,10 @@ import {STATUSES} from "../../constants";
 import TaskList from "../../components/TaskList";
 import Dialog from '@material-ui/core/Dialog';
 import TaskForm from "../../components/TaskForm";
-
-const listTasks = [
-    {
-        id: 1,
-        title: "Read book",
-        description: "Angel and Demon",
-        status: 0
-    },
-    {
-        id: 2,
-        title: "Play Poe",
-        description: "Alone with loliness",
-        status: 2
-    },
-    {
-        id: 3,
-        title: "Watch Kana",
-        description: "With one hand",
-        status: 1
-    },
-
-];
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
+import {bindActionCreators} from "redux";
+import * as taskActions from "./../../actions/task";
 
 class TaskBoard extends Component {
 
@@ -44,13 +26,20 @@ class TaskBoard extends Component {
         open: false,
     }
 
+    componentDidMount() {
+        const {taskActionCreators} = this.props;
+        const {fetchListTaskRequest} = taskActionCreators;
+        fetchListTaskRequest();
+    }
+
     renderBoard() {
+        const {listTask} = this.props;
         let xhtml = null;
         xhtml = (
             <Grid container spacing={3}>
                 {
                     STATUSES.map((status) => {
-                        const taskFiltered = listTasks.filter(task => task.status === status.value);
+                        const taskFiltered = listTask.filter(task => task.status === status.value);
                         return (
                             <TaskList key={status.value} tasks={taskFiltered} status={status}/>
                         )
@@ -72,6 +61,7 @@ class TaskBoard extends Component {
             open: true
         });
     }
+
     renderForm() {
         const {open} = this.state;
         let xhtml = null;
@@ -95,4 +85,24 @@ class TaskBoard extends Component {
     }
 }
 
-export default withStyles(styles)(TaskBoard);
+TaskBoard.propType = {
+    classes: PropTypes.object,
+    taskActionCreators: PropTypes.shape({
+        fetchListTaskRequest: PropTypes.func
+    }),
+    listTask: PropTypes.array,
+};
+
+
+const mapStateToProps = state =>{
+    return {
+        listTask: state.task.listTask,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        taskActionCreators: bindActionCreators(taskActions, dispatch),
+    }
+};
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(TaskBoard));
