@@ -5,6 +5,7 @@ const theme = createTheme({
         primary: "#00BCD4",
         secondary: "#E64A19",
         error: "#F44336",
+        textColor: '#ffffff',
     },
     shape: {
         borderRadius: 8,

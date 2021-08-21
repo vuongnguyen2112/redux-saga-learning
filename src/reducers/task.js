@@ -1,5 +1,5 @@
 import * as taskConstants from "../constants/task";
-import {FETCH_TASK} from "../constants/task";
+import {toastError} from "../helper/toastHelper";
 
 const initialState = {
     listTask: []
@@ -17,13 +17,22 @@ const reducer = (state = initialState, action) => {
             const {data} = action.payload;
             return {
                 ...state,
-                listTask: [data][0]
+                listTask: data
             }
         }
-        case taskConstants.FETCH_TASK_FAIL: {
+        case taskConstants.FETCH_TASK_FAILED: {
+            const {error} = action.payload;
+            toastError(error);
             return {
                 ...state,
                 listTask: []
+            }
+        }
+        case taskConstants.FILTER_TASK_SUCCESS: {
+            const {data} = action.payload;
+            return {
+                ...state,
+                listTask: data
             }
         }
         default: return state;
