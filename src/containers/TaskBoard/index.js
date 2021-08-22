@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add"
 import {STATUSES} from "../../constants";
 import TaskList from "../../components/TaskList";
-import TaskForm from "../../components/TaskForm";
+import TaskForm from "../TaskForm";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {bindActionCreators} from "redux";
@@ -53,10 +53,11 @@ class TaskBoard extends Component {
     }
 
     openForm = () => {
-        const {modalActions} = this.props;
-        const {showModal, changeModalTitle, changeModalContent} = modalActions;
+        const {modalActionCreators} = this.props;
+        const {showModal, changeModalTitle, changeModalContent} = modalActionCreators;
         showModal();
         changeModalTitle('Thêm điều mục mới');
+        changeModalContent(<TaskForm/>);
     }
 
     renderForm() {
@@ -116,7 +117,7 @@ TaskBoard.propType = {
         fetchListTask: PropTypes.func,
         filterTask: PropTypes.func,
     }),
-    modalActions: PropTypes.shape({
+    modalActionCreators: PropTypes.shape({
        showModal: PropTypes.func,
         hideModal: PropTypes.func,
         changeModalTitle: PropTypes.func,
@@ -136,7 +137,7 @@ const mapStateToProps = state =>{
 const mapDispatchToProps = dispatch => {
     return {
         taskActionCreators: bindActionCreators(taskActions, dispatch),
-        modalActions: bindActionCreators(modalActions, dispatch),
+        modalActionCreators: bindActionCreators(modalActions, dispatch),
     }
 };
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(TaskBoard));

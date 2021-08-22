@@ -1,7 +1,9 @@
 import * as types from '../constants/modal';
 
 const initialState = {
-    showModal: false
+    showModal: false,
+    title: '',
+    component: null
 };
 
 const reducer = (state = initialState, action) => {
