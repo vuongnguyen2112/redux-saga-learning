@@ -9,9 +9,6 @@ const styles = theme => ({
         boxShadow: theme.shadows[5],
         // padding: theme.spacing(2, 4, 3),
     },
-    textField: {
-        width: '100%'
-    },
     header: {
         backgroundColor: theme.color.primary,
         color: '#000000',
