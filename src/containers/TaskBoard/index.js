@@ -56,17 +56,8 @@ class TaskBoard extends Component {
         const {modalActionCreators} = this.props;
         const {showModal, changeModalTitle, changeModalContent} = modalActionCreators;
         showModal();
-        changeModalTitle('Thêm điều mục mới');
+        changeModalTitle('Thêm công việc mới');
         changeModalContent(<TaskForm/>);
-    }
-
-    renderForm() {
-        const {open} = this.state;
-        let xhtml = null;
-        xhtml = (
-            <TaskForm open={open} onClose={this.handleClose}/>
-        );
-        return xhtml;
     }
 
     loadData = () => {
@@ -105,7 +96,6 @@ class TaskBoard extends Component {
                 </Button>
                 {this.renderSearchBox()}
                 {this.renderBoard()}
-                {this.renderForm()}
             </div>
         );
     }

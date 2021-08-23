@@ -23,10 +23,9 @@ class App extends Component {
                     <TaskBoard/>
                     <GlobalLoading/>
                     <Modal/>
-                    <ToastContainer />
+                    <ToastContainer/>
                 </ThemeProvider>
             </Provider>
-
         );
     }
 }
