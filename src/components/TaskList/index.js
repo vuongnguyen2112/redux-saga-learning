@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import {Box, Grid, withStyles} from "@material-ui/core";
 import styles from "./styles";
 import TaskItem from "../TaskItem";
+import PropTypes from "prop-types";
 
 class TaskList extends Component {
     render() {
-        const {classes, tasks, status} = this.props;
+        const {classes, tasks, status, onEdit} = this.props;
         return (
             <Grid item md={4} xs={12} key={status.value}>
                 <Box mt={2} mb={2}>
@@ -14,9 +15,13 @@ class TaskList extends Component {
                 <div className={classes.wrapperListTask}>
                     {
                         tasks.map((task) => {
-                            const {title} = task;
                             return (
-                                <TaskItem task={task} status={status} key={task.id}/>
+                                <TaskItem
+                                    task={task}
+                                    status={status}
+                                    key={task.id}
+                                    onClickEdit={() => onEdit(task)}
+                                />
                             );
                         })
                     }
@@ -24,6 +29,13 @@ class TaskList extends Component {
             </Grid>
         );
     }
+}
+
+TaskList.propTypes = {
+    classes: PropTypes.object,
+    tasks: PropTypes.array,
+    status: PropTypes.object,
+    onEdit: PropTypes.func
 }
 
 export default withStyles(styles)(TaskList);

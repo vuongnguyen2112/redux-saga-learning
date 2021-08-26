@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import styles from "./styles";
 import {withStyles} from "@material-ui/core";
 import React, {Component} from 'react';
@@ -16,7 +15,6 @@ const store = configureStore();
 
 class App extends Component {
     render() {
-        const {classes} = this.props;
         return (
             <Provider store={store}>
                 <ThemeProvider theme={theme}>

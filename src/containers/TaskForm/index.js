@@ -1,39 +1,53 @@
 import React, {Component} from 'react';
-import {Box, Grid, TextField, withStyles} from "@material-ui/core";
+import {Box, Grid, MenuItem, withStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import styles from "./styles";
 import PropTypes from "prop-types";
 import {bindActionCreators, compose} from "redux";
 import * as modalActions from "../../actions/modal";
+import * as taskActions from "../../actions/task";
 import {connect} from "react-redux";
 import {reduxForm, Field} from "redux-form";
 import renderTextField from "../../components/FormHelper/TextField";
 import validate from './validate';
+import renderSelectField from "../../components/FormHelper/Select";
 
 class TaskForm extends Component {
 
     handleSubmitForm = data => {
-        console.log('data: ', data);
+        const {taskActionCreators, taskEditing} = this.props;
+        const {addTask, updateTask} = taskActionCreators;
+        const {title, description, status} = data;
+        if (taskEditing && taskEditing.id) {
+            updateTask(title, description, status);
+        }else {
+            addTask(title, description);
+        }
     }
 
-    required = value => {
-        let error = 'Vui lòng nhập tiêu đề';
-        if (value !== null && typeof value !== 'undefined' && value.trim() !== '') {
-            error = null;
+    renderStatusSelection() {
+        let xhtml = null;
+        const {taskEditing, classes} = this.props;
+        if (taskEditing && taskEditing.id) {
+            xhtml = (
+                <Field
+                    id={"status"}
+                    label={"Trạng thái"}
+                    className={classes.select}
+                    name={"status"}
+                    component={renderSelectField}
+                >
+                    <MenuItem value={0}>Ready</MenuItem>
+                    <MenuItem value={1}>In Progress</MenuItem>
+                    <MenuItem value={2}>Complete</MenuItem>
+                </Field>
+            );
         }
-        return error;
-    }
-
-    minLength5 = value => {
-        let error = null;
-        if (value.length < 5) {
-            error = 'Tiêu đề phải ít nhất 5 ký tự';
-        }
-        return error;
+        return xhtml;
     }
 
     render() {
-        const {classes, modalActionsCreators, handleSubmit, invalid, submitting } = this.props;
+        const {classes, modalActionsCreators, handleSubmit, invalid, submitting} = this.props;
         const {hideModal} = modalActionsCreators;
         return (
             <form onSubmit={handleSubmit(this.handleSubmitForm)}>
@@ -60,10 +74,12 @@ class TaskForm extends Component {
                             component={renderTextField}
                         />
                     </Grid>
+                    {this.renderStatusSelection()}
                     <Grid item md={12}>
                         <Box display="flex" flexDirection="row-reverse" mt={2}>
                             <Box ml={1}>
-                                <Button disabled={invalid || submitting} variant="contained" color={"primary"} type={"submit"}>
+                                <Button disabled={invalid || submitting} variant="contained" color={"primary"}
+                                        type={"submit"}>
                                     Lưu
                                 </Button>
                             </Box>
@@ -84,15 +100,30 @@ TaskForm.propTypes = {
     modalActionsCreators: PropTypes.shape({
         hideModal: PropTypes.func
     }),
+    taskActionCreators: PropTypes.shape({
+        addTask: PropTypes.func,
+        updateTask: PropTypes.func
+    }),
     handleSubmit: PropTypes.func,
     invalid: PropTypes.bool,
-    submitting: PropTypes.bool
+    submitting: PropTypes.bool,
+    taskEditing: PropTypes.object
 }
 
-const mapStateToProps = null;
+const mapStateToProps = state => {
+    return {
+        taskEditing: state.task.taskEditing,
+        initialValues: {
+            title: state.task.taskEditing ? state.task.taskEditing.title : null,
+            description: state.task.taskEditing ? state.task.taskEditing.description : null,
+            status: state.task.taskEditing ? state.task.taskEditing.status : null
+        }
+    }
+};
 
 const mapDispatchToProps = dispatch => ({
     modalActionsCreators: bindActionCreators(modalActions, dispatch),
+    taskActionCreators: bindActionCreators(taskActions, dispatch)
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

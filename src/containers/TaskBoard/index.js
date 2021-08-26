@@ -18,42 +18,16 @@ import * as modalActions from "./../../actions/modal";
 
 class TaskBoard extends Component {
 
-    state = {
-        open: false,
-    }
-
     componentDidMount() {
         const {taskActionCreators} = this.props;
         const {fetchListTask} = taskActionCreators;
         fetchListTask();
     }
 
-    renderBoard() {
-        const {listTask} = this.props;
-        let xhtml = null;
-        xhtml = (
-            <Grid container spacing={3}>
-                {
-                    STATUSES.map((status) => {
-                        const taskFiltered = listTask.filter(task => task.status === status.value);
-                        return (
-                            <TaskList key={status.value} tasks={taskFiltered} status={status}/>
-                        )
-                    })
-                }
-            </Grid>
-        );
-        return xhtml;
-    }
-
-    handleClose = () => {
-        this.setState({
-            open: false
-        });
-    }
-
     openForm = () => {
-        const {modalActionCreators} = this.props;
+        const {modalActionCreators, taskActionCreators} = this.props;
+        const {setTaskEditing} = taskActionCreators;
+        setTaskEditing(null);
         const {showModal, changeModalTitle, changeModalContent} = modalActionCreators;
         showModal();
         changeModalTitle('Thêm công việc mới');
@@ -73,6 +47,39 @@ class TaskBoard extends Component {
         filterTask(value);
     }
 
+    handleEditTask = task => {
+        const {taskActionCreators, modalActionCreators} = this.props;
+        const {setTaskEditing} = taskActionCreators;
+        setTaskEditing(task);
+        const {showModal, changeModalTitle, changeModalContent} = modalActionCreators;
+        showModal();
+        changeModalTitle('Cập nhật công việc');
+        changeModalContent(<TaskForm/>);
+    }
+
+    renderBoard() {
+        const {listTask} = this.props;
+        let xhtml = null;
+        xhtml = (
+            <Grid container spacing={3}>
+                {
+                    STATUSES.map((status) => {
+                        const taskFiltered = listTask.filter(task => task.status === status.value);
+                        return (
+                            <TaskList
+                                key={status.value}
+                                tasks={taskFiltered}
+                                status={status}
+                                onEdit={this.handleEditTask}
+                            />
+                        )
+                    })
+                }
+            </Grid>
+        );
+        return xhtml;
+    }
+
     renderSearchBox() {
         let xhtml = null;
         xhtml = (
@@ -87,7 +94,7 @@ class TaskBoard extends Component {
         return (
             <div className={classes.taskboard}>
                 <Button variant={"contained"} color={"primary"} className={classes.button} onClick={this.loadData}
-                        style={{ marginRight: 20 }}
+                        style={{marginRight: 20}}
                 >
                     Load data
                 </Button>
@@ -106,9 +113,10 @@ TaskBoard.propType = {
     taskActionCreators: PropTypes.shape({
         fetchListTask: PropTypes.func,
         filterTask: PropTypes.func,
+        setTaskEditing: PropTypes.func
     }),
     modalActionCreators: PropTypes.shape({
-       showModal: PropTypes.func,
+        showModal: PropTypes.func,
         hideModal: PropTypes.func,
         changeModalTitle: PropTypes.func,
         changeModalContent: PropTypes.func
@@ -118,7 +126,7 @@ TaskBoard.propType = {
 };
 
 
-const mapStateToProps = state =>{
+const mapStateToProps = state => {
     return {
         listTask: state.task.listTask,
     };

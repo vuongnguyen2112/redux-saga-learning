@@ -7,16 +7,24 @@ class AxiosService {
         this.instance = instance;
     }
 
-    handleSuccess(response){
+    handleSuccess(response) {
         return response;
     }
 
-    handleError(error){
+    handleError(error) {
         return Promise.reject(error);
     }
 
-    get(url){
+    get(url) {
         return this.instance.get(url);
+    }
+
+    post(url, body) {
+        return this.instance.post(url, body);
+    }
+
+    put(url, body) {
+        return this.instance.put(url, body);
     }
 }
 

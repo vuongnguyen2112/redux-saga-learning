@@ -7,13 +7,14 @@ import CardActions from "@material-ui/core/CardActions";
 import Card from "@material-ui/core/Card";
 import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
+import PropTypes from 'prop-types';
 
 class TaskItem extends Component {
     render() {
-        const {task, classes, status} = this.props;
+        const {task, classes, status, onClickEdit} = this.props;
         const {id, title, description} = task;
         return (
-            <Card key={id} >
+            <Card key={id} className={classes.card}>
                 <CardContent>
                     <Grid container justifyContent="space-between">
                         <Grid item md={8}>
@@ -26,12 +27,12 @@ class TaskItem extends Component {
                     <p>{description}</p>
                 </CardContent>
                 <CardActions className={classes.cardActions}>
-                    <Fab color="primary" aria-label="add" size={"small"}>
+                    <Fab color="primary" aria-label="Edit" size={"small"} onClick={onClickEdit}>
                         <Icon fontSize={"small"}>
                             edit_icon
                         </Icon>
                     </Fab>
-                    <Fab color="secondary" aria-label="delete" size={"small"}>
+                    <Fab color="secondary" aria-label="Delete" size={"small"}>
                         <Icon fontSize={"small"}>
                             delete_icon
                         </Icon>
@@ -40,6 +41,13 @@ class TaskItem extends Component {
             </Card>
         );
     }
+}
+
+TaskItem.propTypes = {
+    classes: PropTypes.object,
+    task: PropTypes.object,
+    status: PropTypes.object,
+    onClickEdit: PropTypes.func
 }
 
 export default withStyles(styles)(TaskItem);
