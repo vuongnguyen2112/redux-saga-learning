@@ -1,6 +1,5 @@
 import * as taskConstants from "../constants/task";
-import {toastError} from "../helper/toastHelper";
-import {computeHeadingLevel} from "@testing-library/react";
+import {toastError, toastSuccess} from "../helper/toastHelper";
 
 const initialState = {
     listTask: [],
@@ -44,6 +43,7 @@ const reducer = (state = initialState, action) => {
         }
         case taskConstants.ADD_TASK_SUCCESS: {
             const {data} = action.payload;
+            toastSuccess('Thêm công việc thành công');
             return {
                 ...state,
                 listTask: [data].concat(state.listTask)
@@ -78,12 +78,41 @@ const reducer = (state = initialState, action) => {
                     data,
                     ...listTask.slice(index+1)
                 ];
+                toastSuccess('Cập nhật công việc thành công');
                 return {
                     ...state,
                     listTask: newList
                 };
             }
+            toastError('Cập nhật thất bại');
             return {...state};
+        }
+        case taskConstants.UPDATE_TASK_FAILED: {
+            const {error} = action.payload;
+            toastError(error);
+            return {
+                ...state,
+            }
+        }
+        case taskConstants.DELETE_TASK: {
+            return {
+                ...state
+            }
+        }
+        case taskConstants.DELETE_TASK_SUCCESS: {
+            const {data: taskID} = action.payload; //data => taskID
+            toastSuccess('Xoá công việc thành công');
+            return {
+                ...state,
+                listTask: state.listTask.filter(item => item.id !== taskID)
+            };
+        }
+        case taskConstants.DELETE_TASK_FAILED: {
+            const {error} = action.payload;
+            toastError(error);
+            return {
+                ...state,
+            }
         }
         default:
             return state;

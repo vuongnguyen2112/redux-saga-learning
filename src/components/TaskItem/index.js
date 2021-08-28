@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 class TaskItem extends Component {
     render() {
-        const {task, classes, status, onClickEdit} = this.props;
+        const {task, classes, status, onClickEdit, onClickDelete} = this.props;
         const {id, title, description} = task;
         return (
             <Card key={id} className={classes.card}>
@@ -32,7 +32,7 @@ class TaskItem extends Component {
                             edit_icon
                         </Icon>
                     </Fab>
-                    <Fab color="secondary" aria-label="Delete" size={"small"}>
+                    <Fab color="secondary" aria-label="Delete" size={"small"} onClick={onClickDelete}>
                         <Icon fontSize={"small"}>
                             delete_icon
                         </Icon>

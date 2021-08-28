@@ -1,6 +1,7 @@
-
-const styles = (theme) => ({
-
+const styles = () => ({
+    modalConfirmTextBold: {
+        fontWeight: 500
+    }
 });
 
 export default styles;

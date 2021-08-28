@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+    Box,
     Grid,
     withStyles
 } from "@material-ui/core";
@@ -11,7 +12,7 @@ import TaskList from "../../components/TaskList";
 import TaskForm from "../TaskForm";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {bindActionCreators} from "redux";
+import {bindActionCreators, compose} from "redux";
 import * as taskActions from "./../../actions/task";
 import SearchBox from "../../components/SearchBox";
 import * as modalActions from "./../../actions/modal";
@@ -57,10 +58,39 @@ class TaskBoard extends Component {
         changeModalContent(<TaskForm/>);
     }
 
+    showModalDeleteTask = task => {
+        const {modalActionCreators, classes} = this.props;
+        const {showModal, hideModal, changeModalTitle, changeModalContent} = modalActionCreators;
+        showModal();
+        changeModalTitle('Xoá công việc');
+        changeModalContent(
+            <div className={classes.modalDelete}>
+                <div className={classes.modalConfirmText}>
+                    Bạn chắc chắn muốn xoá <span className={classes.modalConfirmTextBold}>{task.title}</span>?
+                </div>
+                <Box display={"flex"} flexDirection={"row-reverse"} mt={2}>
+                    <Box ml={1}>
+                        <Button variant={"contained"} color={"primary"}
+                                onClick={() => this.handleDeleteTask(task)}>Xoá</Button>
+                    </Box>
+                    <Box>
+                        <Button variant={"contained"} onClick={hideModal}>Huỷ Bỏ</Button>
+                    </Box>
+                </Box>
+            </div>
+        );
+    }
+
+    handleDeleteTask(task) {
+        const {taskActionCreators} = this.props;
+        const {deleteTask} = taskActionCreators;
+        const {id} = task;
+        deleteTask(id);
+    }
+
     renderBoard() {
         const {listTask} = this.props;
-        let xhtml = null;
-        xhtml = (
+        return (
             <Grid container spacing={3}>
                 {
                     STATUSES.map((status) => {
@@ -71,21 +101,19 @@ class TaskBoard extends Component {
                                 tasks={taskFiltered}
                                 status={status}
                                 onEdit={this.handleEditTask}
+                                onDelete={this.showModalDeleteTask}
                             />
                         )
                     })
                 }
             </Grid>
         );
-        return xhtml;
     }
 
     renderSearchBox() {
-        let xhtml = null;
-        xhtml = (
+        return (
             <SearchBox handleChange={this.handleFilter}/>
         );
-        return xhtml;
     }
 
 
@@ -113,7 +141,8 @@ TaskBoard.propType = {
     taskActionCreators: PropTypes.shape({
         fetchListTask: PropTypes.func,
         filterTask: PropTypes.func,
-        setTaskEditing: PropTypes.func
+        setTaskEditing: PropTypes.func,
+        deleteTask: PropTypes.func
     }),
     modalActionCreators: PropTypes.shape({
         showModal: PropTypes.func,
@@ -138,4 +167,10 @@ const mapDispatchToProps = dispatch => {
         modalActionCreators: bindActionCreators(modalActions, dispatch),
     }
 };
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(TaskBoard));
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(
+    withStyles(styles),
+    withConnect,
+)(TaskBoard);

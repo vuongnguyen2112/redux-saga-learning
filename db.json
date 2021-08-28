@@ -1,22 +1,10 @@
 {
   "tasks": [
     {
-      "title": "Read book",
-      "description": "Angel and Demon",
-      "status": 0,
-      "id": 1
-    },
-    {
       "id": 2,
       "title": "Watch Kana",
       "description": "With one hand",
       "status": 1
-    },
-    {
-      "id": 3,
-      "title": "Play Poe",
-      "description": "Alone with loneliness123",
-      "status": 2
     },
     {
       "title": "Listening Toeic",
@@ -25,15 +13,9 @@
       "id": 4
     },
     {
-      "title": "Learning reactjs",
-      "description": "Redux form",
-      "status": 0,
-      "id": 5
-    },
-    {
       "title": "Learning tailwindcss",
       "description": "online",
-      "status": 0,
+      "status": 2,
       "id": 6
     },
     {
@@ -43,8 +25,8 @@
       "id": 7
     },
     {
-      "title": "Dắt mèo",
-      "description": "ở công viên gia định",
+      "title": "Play games",
+      "description": "LOL",
       "status": 1,
       "id": 8
     }
