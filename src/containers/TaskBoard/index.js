@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {
     Box,
-    Grid,
-    withStyles
+    Grid
 } from "@material-ui/core";
 import styles from "./styles";
 import Button from "@material-ui/core/Button";
@@ -16,6 +15,7 @@ import {bindActionCreators, compose} from "redux";
 import * as taskActions from "./../../actions/task";
 import SearchBox from "../../components/SearchBox";
 import * as modalActions from "./../../actions/modal";
+import {withStyles} from "@material-ui/styles";
 
 class TaskBoard extends Component {
 

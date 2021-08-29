@@ -20,3 +20,18 @@ export const STATUS_CODE = {
     CREATED: 201,
     UPDATED: 202,
 };
+
+/*
+export const ADMIN_ROUTES = [
+    {
+        path: '/',
+        name: 'Trang quản trị',
+        exact: true,
+        component: AdminHomePage,
+    },
+    {
+        path: '/taskboard',
+        name: 'Quản lý công việc',
+        component: TaskBoard,
+    }
+];*/
