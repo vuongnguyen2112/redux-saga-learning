@@ -12,7 +12,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
-
 const menuId = 'primary-search-account-menu';
 const mobileMenuId = 'primary-search-account-menu-mobile';
 
@@ -25,7 +24,6 @@ class Header extends Component {
             anchorEl: null,
         }
     }
-
 
     handleProfileMenuOpen = e => {
         this.setState({
@@ -58,10 +56,10 @@ class Header extends Component {
         return (
             <Menu
                 anchorEl={anchorEl}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                anchorOrigin={{vertical: 'top', horizontal: 'right'}}
                 id={menuId}
                 keepMounted
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{vertical: 'top', horizontal: 'right'}}
                 open={isMenuOpen}
                 onClose={this.handleMenuClose}
             >
@@ -76,10 +74,10 @@ class Header extends Component {
         return (
             <Menu
                 anchorEl={mobileMoreAnchorEl}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                anchorOrigin={{vertical: 'top', horizontal: 'right'}}
                 id={mobileMenuId}
                 keepMounted
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{vertical: 'top', horizontal: 'right'}}
                 open={isMobileMenuOpen}
                 onClose={this.handleMobileMenuClose}
             >
@@ -90,12 +88,19 @@ class Header extends Component {
                         aria-haspopup="true"
                         color="inherit"
                     >
-                        <AccountCircle />
+                        <AccountCircle/>
                     </IconButton>
                     <p>Profile</p>
                 </MenuItem>
             </Menu>
         );
+    }
+
+    handleToggleSideBar = () => {
+        const {showSideBar, onToggleSideBar} = this.props;
+        if (onToggleSideBar) {
+            onToggleSideBar(!showSideBar);
+        }
     }
 
     render() {
@@ -109,6 +114,7 @@ class Header extends Component {
                             className={classes.menuButton}
                             color="inherit"
                             aria-label="open drawer"
+                            onClick={this.handleToggleSideBar}
                         >
                             <MenuIcon/>
                         </IconButton>
@@ -150,7 +156,9 @@ class Header extends Component {
 
 Header.propTypes = {
     classes: PropTypes.object,
-    name: PropTypes.string
+    name: PropTypes.string,
+    showSideBar: PropTypes.bool,
+    onToggleSideBar: PropTypes.func
 }
 
 export default withStyles(styles)(Header);

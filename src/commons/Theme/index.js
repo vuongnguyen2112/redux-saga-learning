@@ -6,6 +6,8 @@ const theme = createTheme({
         secondary: "#E64A19",
         error: "#F44336",
         textColor: '#ffffff',
+        defaultTextColor: '#000000',
+        hover: '#ACDF87'
     },
     shape: {
         borderRadius: 8,
