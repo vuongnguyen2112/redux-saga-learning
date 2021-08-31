@@ -121,11 +121,11 @@ class TaskBoard extends Component {
         const {classes} = this.props;
         return (
             <div className={classes.taskboard}>
-                <Button variant={"contained"} color={"primary"} className={classes.button} onClick={this.loadData}
+                {/*<Button variant={"contained"} color={"primary"} className={classes.button} onClick={this.loadData}
                         style={{marginRight: 20}}
                 >
                     Load data
-                </Button>
+                </Button>*/}
                 <Button variant={"contained"} color={"primary"} className={classes.button} onClick={this.openForm}>
                     <AddIcon/> Thêm mới công việc
                 </Button>

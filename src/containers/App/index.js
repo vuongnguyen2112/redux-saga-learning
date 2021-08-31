@@ -11,8 +11,10 @@ import GlobalLoading from "../../components/GlobalLoading";
 import Modal from "../../components/Modal";
 import {BrowserRouter, Switch} from "react-router-dom";
 import AdminLayoutRoute from "../../commons/Layout/AdminLayoutRoute";
-import {ADMIN_ROUTES} from "../../constants/adminRoutes";
 import CssBaseline from '@material-ui/core/CssBaseline';
+import {ADMIN_ROUTES} from "../../constants/Routes/adminRoutes";
+import {ROUTES} from "../../constants/Routes/routes";
+import DefaultLayoutRoute from "../../commons/Layout/DefaultLayoutRoute";
 
 const store = configureStore();
 
@@ -22,6 +24,20 @@ class App extends Component {
         return ADMIN_ROUTES.map(route => {
             return (
                 <AdminLayoutRoute
+                    key={route.path}
+                    path={route.path}
+                    component={route.component}
+                    exact={route.exact}
+                    name={route.name}
+                />
+            );
+        });
+    }
+
+    renderDefaultRoutes() {
+        return ROUTES.map(route => {
+            return (
+                <DefaultLayoutRoute
                     key={route.path}
                     path={route.path}
                     component={route.component}
@@ -43,6 +59,7 @@ class App extends Component {
                         <ToastContainer/>
                         <Switch>
                             {this.renderAdminRoutes()}
+                            {this.renderDefaultRoutes()}
                         </Switch>
                     </ThemeProvider>
                 </BrowserRouter>

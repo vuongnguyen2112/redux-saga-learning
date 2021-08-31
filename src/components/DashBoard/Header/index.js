@@ -11,6 +11,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import {compose} from "redux";
+import {withRouter} from "react-router";
 
 const menuId = 'primary-search-account-menu';
 const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -50,6 +52,13 @@ class Header extends Component {
         this.handleMobileMenuClose();
     }
 
+    handleLogout = () => {
+        const {history} = this.props;
+        if (history) {
+            history.push("/login");
+        }
+    }
+
     renderMenu = () => {
         const {anchorEl} = this.state;
         const isMenuOpen = Boolean(anchorEl);
@@ -63,7 +72,7 @@ class Header extends Component {
                 open={isMenuOpen}
                 onClose={this.handleMenuClose}
             >
-                <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
+                <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
             </Menu>
         );
     }
@@ -158,7 +167,11 @@ Header.propTypes = {
     classes: PropTypes.object,
     name: PropTypes.string,
     showSideBar: PropTypes.bool,
-    onToggleSideBar: PropTypes.func
+    onToggleSideBar: PropTypes.func,
+    history: PropTypes.object
 }
 
-export default withStyles(styles)(Header);
+export default compose(
+    withStyles(styles),
+    withRouter
+)(Header);

@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {withStyles} from "@material-ui/styles";
 import styles from './styles';
 import {Drawer, List, ListItem} from "@material-ui/core";
-import {ADMIN_ROUTES} from "../../../constants/adminRoutes";
 import PropTypes from 'prop-types';
 import {NavLink} from "react-router-dom";
+import {ADMIN_ROUTES} from "../../../constants/Routes/adminRoutes";
 
 class SideBar extends Component {
 
